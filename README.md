@@ -50,4 +50,45 @@ The script will automatically read the ECR repository URL from Terraform output,
 
 Make sure the ECR repository exists before running this script (see step 2 above).
 
+# Helm Chart for Flask Application Deployment
+
+This Helm chart deploys a simple Flask application to an existing Kubernetes (EKS) cluster.
+
+---
+
+## Chart Structure
+
+- `Chart.yaml`: Metadata about the chart
+- `values.yaml`: Default configuration values used in templates
+- `templates/`: Kubernetes manifest templates including Deployment, Service, Ingress, etc.
+
+---
+
+## Features
+
+- Deploys the Flask app as a Deployment with configurable replica count
+- Exposes the app internally via a ClusterIP Service
+- Optionally exposes the app externally via an Ingress resource with customizable host and path
+- Resource requests and limits configured for CPU and memory
+- Supports configuring image repository, tag, and pull policy via `values.yaml`
+
+---
+
+## Usage
+
+1. Customize `values.yaml` as needed (e.g., image repository URL, ingress host)
+
+2. Deploy the chart to your Kubernetes cluster:
+
+```bash
+helm install my-app ./helm/my-app
+
+Accessing the Application
+If Ingress is enabled, access the application via the host defined in values.yaml under ingress.host.
+Otherwise, access the Service internally in the cluster or via port-forwarding.
+
+Notes
+Ensure your Kubernetes cluster has an Ingress Controller installed (e.g., nginx-ingress) if you enable ingress.
+The Docker image must be built and pushed to the ECR repository referenced in values.yaml.
+
 
