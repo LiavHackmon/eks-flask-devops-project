@@ -1,0 +1,33 @@
+replicaCount: 2
+
+image:
+  repository: 062370280028.dkr.ecr.eu-north-1.amazonaws.com/my-app-repo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 5000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+  requests:
+    cpu: "250m"
+    memory: "128Mi"
+
+ingress:
+  enabled: true
+  host: my-app.local
+  path: /
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
