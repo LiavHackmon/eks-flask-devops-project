@@ -110,6 +110,22 @@ To provision the infrastructure from GitHub, you can trigger the following workf
 This will execute `terraform init` and `terraform apply` from the `terraform/` directory.
 
 
+## 🧠 Monitoring (Bonus)
+
+As part of the second bonus task, a professional monitoring stack was deployed using Prometheus and Grafana via the official `kube-prometheus-stack` Helm chart.
+
+All core components were successfully installed, including:
+- Prometheus
+- Alertmanager
+- Grafana
+- Node Exporter
+- Kube State Metrics
+
+Metrics were collected from all EKS cluster nodes and visualized in a built-in Grafana dashboard.
+
+### 🔍 Sample from the dashboard (CPU and Memory Utilisation):
+
+![Grafana Dashboard](./screenshots/grafana-dashboard.png)
 
 
 
