@@ -44,15 +44,15 @@ jobs:
           aws eks --region eu-north-1 update-kubeconfig --name my-eks-cluster
 
       - name: Deploy to EKS using Helm
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: my-app-repo
+          IMAGE_TAG: latest
         run: |
-          echo "ECR_REGISTRY=$ECR_REGISTRY"
-          echo "ECR_REPOSITORY=$ECR_REPOSITORY"
-          echo "IMAGE_TAG=$IMAGE_TAG"
-          echo "Running helm upgrade --install my-app-release ./helm/my-app --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY --set image.tag=$IMAGE_TAG --namespace default --create-namespace"
+          echo "Deploying image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           helm upgrade --install my-app-release ./helm/my-app \
-            --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
-            --set image.tag=$IMAGE_TAG \
-            --namespace default \
-            --create-namespace
-
+          --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
+          --set image.tag=$IMAGE_TAG \
+          --namespace default \
+          --create-namespace
 
