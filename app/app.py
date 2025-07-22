@@ -27,7 +27,7 @@ def home():
         </style>
     </head>
     <body>
-        <h1>🚀 DevOps Project</h1>
+        <h1>DevOps Project</h1>
         <p>This Flask app is deployed on AWS EKS using Terraform, Docker, Helm & GitHub Actions.</p>
     </body>
     </html>
