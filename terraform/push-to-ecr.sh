@@ -13,7 +13,7 @@ echo "Logging in to AWS ECR..."
 aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | docker login --username AWS --password-stdin $ECR_URI
 
 echo "Building Docker image: $LOCAL_IMAGE_NAME"
-docker build -t $LOCAL_IMAGE_NAME ./app
+docker build -t $LOCAL_IMAGE_NAME ~/eks-devops-project/app/  
 
 echo "Tagging image with ECR URI..."
 docker tag ${LOCAL_IMAGE_NAME}:latest ${ECR_URI}:latest

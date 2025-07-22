@@ -43,7 +43,7 @@ resource "aws_eks_node_group" "private_nodes" {
   }
 
   instance_types = ["t3.micro"]
-  ami_type       = "AL2_x86_64" # Amazon Linux 2
+  ami_type       = "AL2_x86_64"
   disk_size      = 20
 
   tags = {
@@ -56,6 +56,7 @@ resource "aws_eks_node_group" "private_nodes" {
     aws_iam_role_policy_attachment.eks_node_AmazonEKSCNIPolicy
   ]
 }
+
 resource "aws_eks_node_group" "public_nodes" {
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = "public-node-group"

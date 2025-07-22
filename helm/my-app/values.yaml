@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: 062370280028.dkr.ecr.eu-north-1.amazonaws.com/my-app-repo
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 containerPort: 5000
 
@@ -22,8 +22,21 @@ resources:
 
 ingress:
   enabled: true
-  host: my-app.local
+  host: ""  
   path: /
+  className: nginx
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""    
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
 
 nodeSelector: {}
 
