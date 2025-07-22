@@ -1,94 +1,118 @@
-# AWS Infrastructure Provisioning with Terraform
+# 🧪 DevOps Project – Flask App on EKS (Terraform + Docker + Helm + GitHub Actions)
 
-This project provisions AWS infrastructure using Terraform 1.x, including:
-
-- An S3 bucket to store the Terraform state
-- A VPC with two subnets (public and private)
-- An EKS cluster
-- Two EKS node groups (one in each subnet)
-- An AWS ECR repository for container images
-- IAM roles and necessary permissions
+This project provisions AWS infrastructure using Terraform, containerizes a Flask application with Docker, deploys it using Helm on Amazon EKS, and automates the workflow with GitHub Actions CI/CD.
 
 ---
 
-## Prerequisites
+## 📦 Project Overview
 
-- Terraform version >= 1.3.0
-- AWS CLI configured with proper credentials and profile
-- AWS account with permissions to create resources listed above
+- 🚀 **Terraform** – Provision AWS infrastructure
+- 🐳 **Docker** – Containerize a Flask application
+- 🧱 **ECR** – Store container images
+- ☸️ **EKS** – Host the application on Kubernetes
+- ⚙️ **Helm** – Manage Kubernetes deployments
+- 🤖 **GitHub Actions** – Automate build, push, and deployment
 
 ---
 
-## Setup and Deployment
+## ✅ Infrastructure Provisioning (Terraform)
 
-1. **Clone the repository:**
+Terraform provisions the following AWS resources:
+
+- S3 bucket for remote Terraform state
+- VPC with one public and one private subnet
+- EKS cluster (Amazon Kubernetes Service)
+- Two node groups (one in each subnet)
+- ECR repository for Docker images
+- IAM roles and policies
+
+### 🔧 Setup Instructions
+
+1. Navigate to the Terraform directory:
 
    ```bash
-   git clone https://github.com/YourUserName/YourRepoName.git
-   cd YourRepoName/terraform
+   cd terraform
+Initialize Terraform and apply:
+terraform init
+terraform apply
+
+Terraform will output:
+EKS cluster name
+EKS cluster endpoint
+ECR repository URL
+IAM role ARN
+
+Docker Image & ECR
+The Flask app is located in the app/ directory.
+
+To build and push the image manually (optional step):
+chmod +x push-to-ecr.sh
+./push-to-ecr.sh
+
+This script will:
+Build the image from app/
+Authenticate to ECR
+Tag the image correctly
+Push it to the ECR repository
+
+Note: The image is automatically built and pushed during GitHub Actions as well.
+
+Deploying with Helm
+The Helm chart is located under helm/my-app.
+
+Features:
+Customizable image and tag
+Resource limits
+Ingress support
+Configurable replica count
+
+CI/CD with GitHub Actions
+This project includes a full GitHub Actions pipeline.
+On every push to the main branch, the following happens:
+
+✅ Code is checked out
+
+✅ Docker image is built using the latest commit SHA
+
+✅ Image is tagged and pushed to ECR
+
+✅ Helm upgrade is triggered on EKS with the new image tag
+
+Benefits:
+Image tags are unique per commit (<image>:<commit-sha>)
+Fully automated deployment
+Easy rollback and traceability
 
 
+The application is exposed to the internet using NGINX Ingress Controller.
 
-The Flask application is located in the app/ directory.
-To simplify the process of building and pushing the Docker image to AWS ECR, we created a helper script named push-to-ecr.sh.
+Example endpoint:
+http://a9c71437b84d34f1891081733e5ecfe3-c9aff8857bb8072d.elb.eu-north-1.amazonaws.com
+Note: This endpoint is dynamically created by AWS and may change when infrastructure is destroyed and recreated.
 
-This script is located in the root of the project and helps you:
-
-1) Build the Docker image from the app/ folder
-2) Authenticate with AWS ECR
-3) Tag the image
-4) Push it to the ECR repository that was created using Terraform
-
-- We chose to use a script to avoid running unnecessary Terraform resources while testing the Docker image step.
-
-Steps to use the script:
-1) Go to the root of the project (where push-to-ecr.sh is located)
-2) Make the script executable:chmod +x push-to-ecr.sh
-3) Run the script: ./push-to-ecr.sh
-
-The script will automatically read the ECR repository URL from Terraform output, build the Docker image from the app/ folder, and push it to your ECR.
-
-Make sure the ECR repository exists before running this script (see step 2 above).
-
-# Helm Chart for Flask Application Deployment
-
-This Helm chart deploys a simple Flask application to an existing Kubernetes (EKS) cluster.
+To retrieve your current endpoint:
+kubectl get svc -n ingress-nginx
+Look for the EXTERNAL-IP under the ingress-nginx-controller service.
 
 ---
 
-## Chart Structure
+## ⚙️ Bonus – Provisioning via GitHub Actions
 
-- `Chart.yaml`: Metadata about the chart
-- `values.yaml`: Default configuration values used in templates
-- `templates/`: Kubernetes manifest templates including Deployment, Service, Ingress, etc.
+To provision the infrastructure from GitHub, you can trigger the following workflow manually:
 
----
+**File**: `.github/workflows/infra.yml`
 
-## Features
+**How to use**:
+1. Go to the "Actions" tab in GitHub
+2. Find "Provision Infrastructure with Terraform"
+3. Click "Run workflow"
 
-- Deploys the Flask app as a Deployment with configurable replica count
-- Exposes the app internally via a ClusterIP Service
-- Optionally exposes the app externally via an Ingress resource with customizable host and path
-- Resource requests and limits configured for CPU and memory
-- Supports configuring image repository, tag, and pull policy via `values.yaml`
+This will execute `terraform init` and `terraform apply` from the `terraform/` directory.
 
----
 
-## Usage
 
-1. Customize `values.yaml` as needed (e.g., image repository URL, ingress host)
 
-2. Deploy the chart to your Kubernetes cluster:
 
-```bash
-helm install my-app ./helm/my-app
 
-Accessing the Application
-If Ingress is enabled, access the application via the host defined in values.yaml under ingress.host.
-Otherwise, access the Service internally in the cluster or via port-forwarding.
-
-Notes
-Ensure your Kubernetes cluster has an Ingress Controller installed (e.g., nginx-ingress) if you enable ingress.
-The Docker image must be built and pushed to the ECR repository referenced in values.yaml.
 
 
