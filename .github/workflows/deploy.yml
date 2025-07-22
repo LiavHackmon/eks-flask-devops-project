@@ -40,7 +40,7 @@ jobs:
 
       - name: Deploy to EKS using Helm
         run: |
-          helm upgrade --install my-app ./helm/my-app \
+          helm upgrade --install my-app-release ./helm/my-app \
             --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
             --set image.tag=$IMAGE_TAG \
             --namespace default \
