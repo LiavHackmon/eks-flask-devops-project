@@ -18,24 +18,22 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  
+          aws-region: eu-north-1
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - name: Debug – Print image variables
+
+      - name: Set image variables
+        id: vars
         run: |
-          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}"
-          echo "ECR_REPOSITORY=my-app-repo"
-          echo "IMAGE_TAG=latest"
+          echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY=my-app-repo" >> $GITHUB_ENV
 
       - name: Build, tag, and push Docker image to ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: my-app-repo     
-          IMAGE_TAG: latest
         run: |
-          docker build --no-cache -t $ECR_REPOSITORY ./app
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG ./app
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -44,15 +42,11 @@ jobs:
           aws eks --region eu-north-1 update-kubeconfig --name my-eks-cluster
 
       - name: Deploy to EKS using Helm
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: my-app-repo
-          IMAGE_TAG: latest
         run: |
           echo "Deploying image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           helm upgrade --install my-app-release ./helm/my-app \
-          --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
-          --set image.tag=$IMAGE_TAG \
-          --namespace default \
-          --create-namespace
+            --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
+            --set image.tag=$IMAGE_TAG \
+            --namespace default \
+            --create-namespace
 
