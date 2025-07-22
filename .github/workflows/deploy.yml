@@ -23,6 +23,11 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+      - name: Debug – Print image variables
+        run: |
+          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}"
+          echo "ECR_REPOSITORY=my-app-repo"
+          echo "IMAGE_TAG=latest"
 
       - name: Build, tag, and push Docker image to ECR
         env:
