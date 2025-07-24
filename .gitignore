@@ -1,0 +1,27 @@
+# === Terraform ===
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfplan
+
+# === Helm ===
+*.tgz
+
+# === Python ===
+**/__pycache__/
+*.pyc
+
+# === Logs ===
+*.log
+
+# === Secrets & Configs ===
+*.env
+*.pem
+
+# === Editor Settings ===
+.vscode/
+
+# === System Files ===
+.DS_Store
+Thumbs.db
+
