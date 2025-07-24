@@ -1,17 +1,17 @@
-# 🧪 DevOps Project – Flask App on EKS (Terraform + Docker + Helm + GitHub Actions)
+#DevOps Project – Flask App on EKS (Terraform + Docker + Helm + GitHub Actions)
 
 This project provisions AWS infrastructure using Terraform, containerizes a Flask application with Docker, deploys it using Helm on Amazon EKS, and automates the workflow with GitHub Actions CI/CD.
 
 ---
 
-## 📦 Project Overview
+##Project Overview
 
-- 🚀 **Terraform** – Provision AWS infrastructure
-- 🐳 **Docker** – Containerize a Flask application
-- 🧱 **ECR** – Store container images
-- ☸️ **EKS** – Host the application on Kubernetes
-- ⚙️ **Helm** – Manage Kubernetes deployments
-- 🤖 **GitHub Actions** – Automate build, push, and deployment
+- **Terraform** – Provision AWS infrastructure
+- **Docker** – Containerize a Flask application
+- **ECR** – Store container images
+- **EKS** – Host the application on Kubernetes
+- **Helm** – Manage Kubernetes deployments
+- **GitHub Actions** – Automate build, push, and deployment
 
 ---
 
