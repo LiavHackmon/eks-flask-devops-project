@@ -129,6 +129,23 @@ Metrics were collected from all EKS cluster nodes and visualized in a built-in G
 
 
 
+Post-Infrastructure Automation Script
+After applying Terraform, use the included script to finalize your deployment:
+
+File: redeploy.sh
+
+What it does:
+Updates the kubeconfig with your new EKS cluster
+Installs the NGINX Ingress Controller using Helm
+Waits for the external IP to be available
+
+How to use:
+
+chmod +x redeploy.sh
+./redeploy.sh
+
+This script ensures your cluster is ready for receiving traffic and completes your post-infra automation in seconds 
+
 
 
 
