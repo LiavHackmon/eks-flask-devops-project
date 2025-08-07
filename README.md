@@ -86,8 +86,6 @@ Easy rollback and traceability
 
 The application is exposed to the internet using NGINX Ingress Controller.
 
-Example endpoint:
-http://a9c71437b84d34f1891081733e5ecfe3-c9aff8857bb8072d.elb.eu-north-1.amazonaws.com
 Note: This endpoint is dynamically created by AWS and may change when infrastructure is destroyed and recreated.
 
 To retrieve your current endpoint:
@@ -96,7 +94,6 @@ Look for the EXTERNAL-IP under the ingress-nginx-controller service.
 
 ---
 
-## ⚙️ Bonus – Provisioning via GitHub Actions
 
 To provision the infrastructure from GitHub, you can trigger the following workflow manually:
 
@@ -110,7 +107,7 @@ To provision the infrastructure from GitHub, you can trigger the following workf
 This will execute `terraform init` and `terraform apply` from the `terraform/` directory.
 
 
-## 🧠 Monitoring (Bonus)
+## Monitoring
 
 As part of the second bonus task, a professional monitoring stack was deployed using Prometheus and Grafana via the official `kube-prometheus-stack` Helm chart.
 
