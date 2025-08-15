@@ -89,7 +89,7 @@ The application is exposed to the internet using NGINX Ingress Controller.
 Note: This endpoint is dynamically created by AWS and may change when infrastructure is destroyed and recreated.
 
 To retrieve your current endpoint:
-kubectl get svc -n ingress-nginx
+kubectl get svc -n ingress-nginx.
 Look for the EXTERNAL-IP under the ingress-nginx-controller service.
 
 ---
